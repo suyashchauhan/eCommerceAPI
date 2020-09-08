@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const CategoryModel = require("../models/category");
-const category = require("../models/category");
 const path = require("path");
 
 exports.getAllCategorys = async (req, res) => {
