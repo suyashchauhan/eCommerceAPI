@@ -6,5 +6,9 @@ const CategorySchema = new mongoose.Schema({
     unique: true,
     trim: true,
   },
+  photo:{
+    type:String,
+    default:'no-photo.jpg'
+  }
 });
 module.exports = mongoose.model("Category", CategorySchema);

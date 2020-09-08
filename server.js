@@ -3,14 +3,23 @@ const app = express();
 const mongoose = require("mongoose");
 const colors = require("colors");
 const morgan = require("morgan");
+const dotenv =   require('dotenv');
 const connectDB = require("./database");
+const fileupload = require("express-fileupload")
+
+//Load environment variables
+dotenv.config({path:"./config/config.env"})
+
 connectDB();
 //Route Files
 const categories = require("./routes/category");
 
 //so that req.body works properly
 app.use(express.json());
+//For logging purpose
 app.use(morgan("dev"))
+//file upload 
+app.use(fileupload());
 
 app.use("/api/category", categories);
 

@@ -1,8 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const { getAllBootcamps, AddBootcamp } = require("../Controller/category");
+const {
+  getAllCategorys,
+  AddCategory,
+  updateCategory,
+  getSingleCategory,
+  deleteCategory,
+  Imageupload
+} = require("../Controller/category");
 
-router.route("/").get(getAllBootcamps);
-router.route("/add").post(AddBootcamp);
-
+router.route("/").get(getAllCategorys);
+router.route("/add").post(AddCategory);
+router.route("/:id").put(updateCategory).get(getSingleCategory).delete(deleteCategory);
+router.route("/update/:id").put(Imageupload);
 module.exports = router;
