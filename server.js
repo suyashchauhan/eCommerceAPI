@@ -7,9 +7,16 @@ const dotenv = require("dotenv");
 const passport = require("passport");
 const connectDB = require("./database");
 const fileupload = require("express-fileupload");
+const cookieparser = require('cookie-parser');
 
 //Load environment variables
 dotenv.config({ path: "./config/config.env" });
+
+//so that req.body works properly
+app.use(express.json());
+
+//cookie parser
+app.use(cookieparser());
 
 require("./config/passport")(passport);
 
@@ -28,8 +35,7 @@ connectDB();
 const categories = require("./routes/category");
 const reviews = require("./routes/review");
 const persons = require("./routes/person");
-//so that req.body works properly
-app.use(express.json());
+
 
 //For logging purpose
 app.use(morgan("dev"));
