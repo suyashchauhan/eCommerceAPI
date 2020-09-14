@@ -23,7 +23,7 @@ exports.AddCategory = async (req, res) => {
   try {
     const category = await CategoryModel.create(req.body);
     res.json({ success: true, data: category });
-  } catch (e) {
+  } catch (err) {
     res.status(500).json({ success: false, data: err });
   }
 };

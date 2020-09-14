@@ -6,11 +6,15 @@ const {
   updateCategory,
   getSingleCategory,
   deleteCategory,
-  Imageupload
+  Imageupload,
 } = require("../Controller/category");
-
+const { authorize, protect } = require("../middleware/authorize");
 router.route("/").get(getAllCategorys);
-router.route("/add").post(AddCategory);
-router.route("/:id").put(updateCategory).get(getSingleCategory).delete(deleteCategory);
-router.route("/update/:id").put(Imageupload);
+router.route("/add").post(protect, authorize("admin"), AddCategory);
+router
+  .route("/:id")
+  .put(protect, authorize("admin"), updateCategory)
+  .get(getSingleCategory)
+  .delete(protect, authorize("admin"), deleteCategory);
+router.route("/update/:id").put(protect, authorize("admin"), Imageupload);
 module.exports = router;
