@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
+
 const personModel = new mongoose.Schema({
   firstname: {
     type: String,
@@ -42,22 +44,41 @@ const personModel = new mongoose.Schema({
     required: [true, "Please add a phone number"],
     match: [/^[0-9]{10,10}$/, "Please add a valid phone number"],
   },
+  resetPasswordToken: {
+    type: String,
+    required: false,
+  },
+  resetPasswordExpire: {
+    type: Date,
+    required: false,
+  },
 });
 
 personModel.pre("save", async function (next) {
   // if (this.isNew) {
-    try {
-      const salt = await bcrypt.genSalt(10);
-      // console.log("in the pre save hook " + this);
-      this.password = await bcrypt.hash(this.password, salt);
-    } catch (err) {
-      return err;
-    }
+  try {
+    //console.log("haan yahan pe aaa araha hai ");
+    const salt = await bcrypt.genSalt(10);
+    // console.log("in the pre save hook " + this);
+    this.password = await bcrypt.hash(this.password, salt);
+  } catch (err) {
+    return err;
+  }
   // }
   //next();
 });
 personModel.methods.verifyPassword = async function (enteredPassword) {
-  return  await bcrypt.compare(enteredPassword, this.password);
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
+personModel.methods.generatetoken = function () {
+  const resettoken = crypto.randomBytes(24).toString("hex");
+  this.resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(resettoken)
+    .digest("hex");
+  this.resetPasswordExpire = Date.now() +  60*10 * 1000; // 10 min expiration time
+  return resettoken;
 };
 
 module.exports = mongoose.model("Person", personModel);

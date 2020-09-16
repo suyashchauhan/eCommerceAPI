@@ -1,6 +1,8 @@
 const personModel = require("../models/person");
-const passport = require("passport")
-const jwt= require('jsonwebtoken');
+const passport = require("passport");
+const jwt = require("jsonwebtoken");
+const transporter = require("../config/nodmailer");
+const crypto = require("crypto");
 exports.login = [
   passport.authenticate("local"),
   async (req, res, next) => {
@@ -48,5 +50,54 @@ exports.createdealer = async (req, res) => {
     res.status(200).json({ success: true, data: dealer });
   } catch (err) {
     res.status(404).json({ success: false, data: err });
+  }
+};
+
+exports.forgotPassword = async (req, res, next) => {
+  const user = await personModel.findOne({ _id: req.params.id });
+  if (!user) {
+    res.status(404).json({ success: false, data: "No user exists" });
+    //return next(new Error("no user with that kind of id is available"));
+  }
+  const token = user.generatetoken();
+  await user.save();
+  try {
+    const info = await transporter.sendMail({
+      from: "King dracula", // sender address
+      to: "khushichauhankv1@gmail.com", // list of receivers
+      subject: "Password Reset", // Subject line
+      text: `the token is ${token}`, // plain text body
+    });
+    res.status(200).json({ success: true, data: [user, info.messageId] });
+  } catch (err) {
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+    res.status(404).json({ success: false, data: "Failed to send the email" });
+  }
+};
+exports.resetPassword = async (req, res, next) => {
+  const resetPassword = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+    console.log(resetPassword);
+  try {
+    const user = await personModel.findOne({
+      resetPasswordToken: resetPassword,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+    user.password = req.body.password;
+    user.resetPasswordExpire = undefined;
+    user.resetPasswordToken = undefined;
+    await user.save();
+    res.status(200).json({success:true,data:user});
+  } catch (err) {
+    res.status(404).json({
+      success: true,
+      data:
+        "either the token is not correct or the reset password date expires",
+      err,
+    });
   }
 };
