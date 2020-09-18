@@ -64,7 +64,7 @@ exports.forgotPassword = async (req, res, next) => {
   try {
     const info = await transporter.sendMail({
       from: "King dracula", // sender address
-      to: "khushichauhankv1@gmail.com", // list of receivers
+      to: "suyashchauhan31@gmail.com", // list of receivers
       subject: "Password Reset", // Subject line
       text: `the token is ${token}`, // plain text body
     });
@@ -73,7 +73,7 @@ exports.forgotPassword = async (req, res, next) => {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
     await user.save();
-    res.status(404).json({ success: false, data: "Failed to send the email" });
+    res.status(404).json({ success: false, data: ["Failed to send the email",err] });
   }
 };
 exports.resetPassword = async (req, res, next) => {

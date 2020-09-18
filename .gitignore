@@ -2,3 +2,4 @@ database.js
 node_modules
 config
 photos
+.vscode
