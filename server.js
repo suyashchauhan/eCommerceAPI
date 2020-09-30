@@ -9,6 +9,8 @@ const connectDB = require("./database");
 const fileupload = require("express-fileupload");
 const cookieparser = require("cookie-parser");
 const session = require("express-session");
+const Mongostore = require("connect-mongo")(session);
+const { v4: uuidv4 } = require("uuid");
 //Load environment variables
 dotenv.config({ path: "./config/config.env" });
 //const productModel = require("./models/product");
@@ -22,7 +24,8 @@ app.use(
     secret: process.env.Session_secret,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 180 * 60 * 100 },
+    cookie: { maxAge: 60 * 100 },
+    store: new Mongostore({ mongooseConnection: mongoose.connection }),
   })
 );
 require("./config/passport")(passport);
@@ -43,32 +46,11 @@ const categories = require("./routes/category");
 const reviews = require("./routes/review");
 const persons = require("./routes/person");
 const products = require("./routes/product");
-const cart  = require('./routes/cart');
-
+const cart = require("./routes/cart");
 //For logging purpose
 app.use(morgan("dev"));
 //file upload
 app.use(fileupload());
-// app.get("/api/:id", async (req, res, next) => {
-//   try {
-//     console.log(req.cookies);
-//     //req.session.views = 1;
-//     //console.log("this is on the server file  ".white.bold, req.cookies);
-//     if (!req.session.cart) {
-//       const cart = await productModel.findById(req.params.id);
-//       req.session.cart = cart;
-//       console.log('yaahan pe aa raaha hai ')
-//     } else {
-//       req.session.views = 1;
-//     }
-//     console.log("session is  ".blue, req.session);
-//     console.log(req.session);
-//     // window["localStorage"].xy = "hadsa";
-//     res.send(req.session);
-//   } catch (err) {
-//     res.send(err);
-//   }
-// });
 app.use("/api/category", categories);
 app.use("/api/review", reviews);
 app.use("/api", persons);
