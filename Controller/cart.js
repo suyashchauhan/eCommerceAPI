@@ -11,7 +11,6 @@ exports.addtoCart = async (req, res, next) => {
       res.status(404).json({ success: false, data: "no product with this id" });
     } else {
       let cart = await cartModel.findOne({ userId: req.user._id });
-      console.log(cart);
       if (cart) {
         cart = await cartModel.findOneAndUpdate(
           { userId: req.user._id },
@@ -35,7 +34,6 @@ exports.removeCart = async (req, res, next) => {
     const product = await productModel
       .findById(req.params.id)
       .select("name brand Price Description");
-    console.log(product);
 
     if (!product) {
       res.status(404).json({ success: false, data: "no product with this id" });
