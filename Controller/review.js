@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const reviewModel = require("../models/review");
 
-
 exports.getAllreviews = async (req, res) => {
   try {
     const data = await reviewModel.find({});
@@ -14,29 +13,34 @@ exports.getSinglereview = async (req, res) => {
   try {
     const review = await reviewModel.findById(req.params.id);
     res.status(200).json({ success: true, data: review });
-  } catch (e) {
-    console.err(err);
+  } catch (err) {
     res.status(500).json({ success: false, data: err });
   }
 };
 exports.Addreview = async (req, res) => {
   try {
     const review = await reviewModel.create(req.body);
-    res.json({ success: true, data: review });
-  } catch (e) {
+    res.status(200).json({ success: true, data: review });
+  } catch (err) {
     res.status(500).json({ success: false, data: err });
   }
 };
 
-exports.updatereview = async (req, res) => {
+exports.updatereview = async (req, res, next) => {
   try {
-    const review = await reviewModel.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
+    let review = await reviewModel.findById(req.params.id);
+    if (!review) {
+      res.status(404).json({ success: false, data: "No Review with that ID" });
+    }
+    if (review.user !== req.user.id) {
+      res.status(404).json({ success: false, data: "Access Denied" });
+    }
+    review = await reviewModel.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
-    res.json({ success: true, data: review });
+    res.status(200).json({ success: true, data: review });
   } catch (err) {
     res.status(300).json({ success: true, data: err });
   }
@@ -49,4 +53,3 @@ exports.deletereview = async (req, res) => {
     res.json({ success: true, data: err });
   }
 };
-

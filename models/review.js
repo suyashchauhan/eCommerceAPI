@@ -10,5 +10,10 @@ const ReviewModel = new mongoose.Schema({
     min: [1, "Rating must be atleast 1"],
     max: [10, "Rating must be atleast 10"],
   },
+  user:{
+    type:mongoose.Schema.Types.ObjectId,
+    required:true,
+    ref:'Person'
+  }
 });
 module.exports = mongoose.model("Review", ReviewModel);
