@@ -30,11 +30,13 @@ exports.updatereview = async (req, res, next) => {
   try {
     let review = await reviewModel.findById(req.params.id);
     if (!review) {
-      res.status(404).json({ success: false, data: "No Review with that ID" });
+      return next(new Error("no Review with that ID"));
     }
-    if (review.user !== req.user.id) {
-      res.status(404).json({ success: false, data: "Access Denied" });
+    console.log(review.user.toString());
+    if (review.user.toString() !== req.user.id) {
+      return next(new Error("Access Denied"));
     }
+
     review = await reviewModel.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
@@ -42,14 +44,22 @@ exports.updatereview = async (req, res, next) => {
 
     res.status(200).json({ success: true, data: review });
   } catch (err) {
-    res.status(300).json({ success: true, data: err });
+    res.status(404).json({ success: true, data: err });
   }
 };
 exports.deletereview = async (req, res) => {
   try {
-    const review = await reviewModel.findByIdAndDelete(req.params.id);
-    res.json({ success: true, data: review });
+    let review = await reviewModel.findById(req.params.id);
+    if (!review) {
+      return next(new Error("no Review with that ID"));
+    }
+    if (review.user.toString() !== req.user.id) {
+      return next(new Error("Access Denied"));
+    }
+    review = await reviewModel.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({ success: true, data: review });
   } catch (err) {
-    res.json({ success: true, data: err });
+    res.status(404).json({ success: true, data: err });
   }
 };

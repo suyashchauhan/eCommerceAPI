@@ -17,5 +17,5 @@ router
   .route("/:id")
   .get(getSinglereview)
   .put(protect, updatereview)
-  .delete(deletereview);
+  .delete(protect,deletereview);
 module.exports = router;
