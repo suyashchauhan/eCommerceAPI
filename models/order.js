@@ -5,18 +5,19 @@ const orderSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  orderItem: {
-    qty: {
-      type: Number,
-      required: true,
-      ref: "",
+  orderItems: [
+    {
+      qty: {
+        type: Number,
+        required: true,
+      },
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+        required: true,
+      },
     },
-    product: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Product",
-      required: true,
-    },
-  },
+  ],
   shippingAddress: {
     pincode: { type: String, required: true },
     city: { type: String, required: true },

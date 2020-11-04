@@ -47,6 +47,7 @@ const reviews = require("./routes/review");
 const persons = require("./routes/person");
 const products = require("./routes/product");
 const cart = require("./routes/cart");
+const order = require("./routes/order");
 //For logging purpose
 app.use(morgan("dev"));
 //file upload
@@ -56,6 +57,7 @@ app.use("/api/review", reviews);
 app.use("/api", persons);
 app.use("/api/product", products);
 app.use("/api/cart", cart);
+app.use("/api/order", order);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`the server is running at port ${PORT}`));
