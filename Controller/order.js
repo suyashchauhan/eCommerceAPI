@@ -16,5 +16,21 @@ exports.createOrder = async (req, res) => {
         res.status(200).json({ success: true, data: small });
       }
     );
-  } 
+  }
+};
+exports.cancelOrder = async (req, res) => {
+  const cancelledOrder = await order.findById(req.params.id);
+  if (!cancelledOrder) {
+    res.status(400);
+    return new Error("No order with that id");
+  } else {
+    if (cancelledOrder.user.toString() !== req.user._id.toString()) {
+      res.status(401).json({ success: false, mesg: "Unauthorized" });
+    } else {
+      await order.findByIdAndDelete(req.params.id);
+      res
+        .status(200)
+        .json({ success: true, mesg: "the order has been cancelled" });
+    }
+  }
 };
