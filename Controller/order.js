@@ -34,3 +34,16 @@ exports.cancelOrder = async (req, res) => {
     }
   }
 };
+exports.payforOrder = async (req, res) => {
+  const Order = await order.findById(req.params.id);
+  if (!order) {
+    res
+      .status(404)
+      .json({ success: false, mesg: "there is no order with that id " });
+  } else {
+    Order.isPaid = true;
+    Order.PaidAt = new Date().getTime();
+    await Order.save();
+    res.status(200).json({ success: true, mesg: Order });
+  }
+};
