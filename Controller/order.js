@@ -1,9 +1,9 @@
 const order = require("../models/order");
-exports.createOrder = async (req, res) => {
+exports.createOrder = async (req, res, next) => {
   const { orderItems, shippingAddress } = req.body;
   if (!orderItems || orderItems.length === 0) {
     res.status(400);
-    return new Error("No order items");
+    return next(new Error("No order items"));
   } else {
     order.create(
       {
@@ -18,11 +18,11 @@ exports.createOrder = async (req, res) => {
     );
   }
 };
-exports.cancelOrder = async (req, res) => {
+exports.cancelOrder = async (req, res, next) => {
   const cancelledOrder = await order.findById(req.params.id);
   if (!cancelledOrder) {
     res.status(400);
-    return new Error("No order with that id");
+    return next(new Error("No order with that id"));
   } else {
     if (cancelledOrder.user.toString() !== req.user._id.toString()) {
       res.status(401).json({ success: false, mesg: "Unauthorized" });
@@ -42,7 +42,20 @@ exports.payforOrder = async (req, res) => {
       .json({ success: false, mesg: "there is no order with that id " });
   } else {
     Order.isPaid = true;
-    Order.PaidAt = new Date().getTime();
+    Order.Paidat = new Date().getTime();
+    await Order.save();
+    res.status(200).json({ success: true, mesg: Order });
+  }
+};
+exports.deliveredOrder = async (req, res) => {
+  const Order = await order.findById(req.params.id);
+  if (!order) {
+    res
+      .status(404)
+      .json({ success: false, mesg: "there is no order with that id " });
+  } else {
+    Order.isDelivered = true;
+    Order.deliveredat = new Date().getTime();
     await Order.save();
     res.status(200).json({ success: true, mesg: Order });
   }
