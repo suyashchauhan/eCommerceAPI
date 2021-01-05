@@ -3,20 +3,33 @@ const productModel = require("../models/product");
 const cartModel = require("../models/cart");
 exports.addtoCart = async (req, res, next) => {
   try {
-    const product = await productModel
-      .findById(req.params.id)
-      .select("name brand Price Description");
+    const { qty, productId } = req.body;
+    let product = await productModel.exists({ _id: productId });
 
     if (!product) {
       res.status(404).json({ success: false, data: "no product with this id" });
     } else {
+      product = { productId, qty };
       let cart = await cartModel.findOne({ userId: req.user._id });
       if (cart) {
-        cart = await cartModel.findOneAndUpdate(
-          { userId: req.user._id },
-          { $push: { products: product } },
-          { new: true, useFindAndModify: false }
-        );
+        let flag = false;
+        cart.products.find((o, i) => {
+          if (o.productId + "" === productId) {
+            cart.products[i].qty += qty;
+            flag = true;
+            return true;
+          }
+        });
+
+        if (!flag)
+          cart = await cartModel.findOneAndUpdate(
+            { userId: req.user._id },
+            { $push: { products: product } },
+            { new: true, useFindAndModify: false }
+          );
+        else {
+          await cart.save();
+        }
       } else {
         cart = await cartModel.create({
           userId: req.user._id,
