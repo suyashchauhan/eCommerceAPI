@@ -69,6 +69,16 @@ exports.removeCart = async (req, res, next) => {
     res.status(404).send(err);
   }
 };
+
+exports.emptyCart = async (req, res, next) => {
+  try {
+    await cartModel.deleteOne({ userId: req.user._id });
+    res.status(200).json({ success: true, mesg: "Cart emptied" });
+  } catch (err) {
+    res.status(400).json({ success: false, mesg: "user has no cart to empty" });
+  }
+};
+
 exports.getCartItems = async (req, res, next) => {
   try {
     const cart = await cartModel.find({ userId: req.user._id });
