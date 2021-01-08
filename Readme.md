@@ -1,7 +1,7 @@
 
 # About The API
 
-
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/a434ec8e4682d8d238db)
 
 ## Indices
 
@@ -364,7 +364,7 @@ URL: {{URL}}/reset/6b388ae10e1b9dc86b9d1a072a29306f2af5905f994ba675
 
 ```js        
 {
-    "password":"ladkessone"
+    "password":"thats ok"
 }
 ```
 
