@@ -1,21 +1,28 @@
 const order = require("../models/order");
+const cartModel = require("../models/cart");
 exports.createOrder = async (req, res, next) => {
-  const { orderItems, shippingAddress } = req.body;
-  if (!orderItems || orderItems.length === 0) {
-    res.status(400);
-    return next(new Error("No order items"));
-  } else {
-    order.create(
-      {
-        orderItems,
-        user: req.user._id,
-        shippingAddress,
-      },
-      (err, small) => {
-        if (err) return new Error("Can't create order");
-        res.status(200).json({ success: true, data: small });
-      }
-    );
+  try {
+    const { shippingAddress } = req.body;
+    let orderItems = await cartModel.findOne({ userId: req.user._id });
+    orderItems = orderItems.products;
+    if (!orderItems || orderItems.length === 0) {
+      res.status(400);
+      return next(new Error("No order items"));
+    } else {
+      order.create(
+        {
+          orderItems,
+          user: req.user._id,
+          shippingAddress,
+        },
+        (err, small) => {
+          if (err) return new Error("Can't create order");
+          res.status(200).json({ success: true, data: small });
+        }
+      );
+    }
+  } catch (e) {
+    res.status(500).json({ success: false, err: e });
   }
 };
 exports.cancelOrder = async (req, res, next) => {
