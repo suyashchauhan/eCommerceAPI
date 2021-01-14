@@ -1,5 +1,6 @@
 const order = require("../models/order");
 const cartModel = require("../models/cart");
+const axios = require("axios");
 exports.createOrder = async (req, res, next) => {
   try {
     const { shippingAddress } = req.body;
@@ -9,17 +10,15 @@ exports.createOrder = async (req, res, next) => {
       res.status(400);
       return next(new Error("No order items"));
     } else {
-      order.create(
-        {
-          orderItems,
-          user: req.user._id,
-          shippingAddress,
-        },
-        (err, small) => {
-          if (err) return new Error("Can't create order");
-          res.status(200).json({ success: true, data: small });
-        }
-      );
+      const small = await order.create({
+        orderItems,
+        user: req.user._id,
+        shippingAddress,
+      });
+      await axios.delete("http://localhost:5000/api/cart/", {
+        headers: { Authorization: `Bearer ${req.cookies.token}` },
+      });
+      res.status(200).json({ success: true, data: small });
     }
   } catch (e) {
     res.status(500).json({ success: false, err: e });
