@@ -3,7 +3,7 @@ const reviewModel = require("../models/review");
 
 exports.getAllreviews = async (req, res) => {
   try {
-    const data = await reviewModel.find({});
+    const data = await reviewModel.find({ product: req.body.productID });
     res.status(200).json({ success: true, data });
   } catch (err) {
     res.status(500).json({ success: false, data: err });

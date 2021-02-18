@@ -8,7 +8,7 @@ const {
   deletereview,
 } = require("../Controller/review");
 const { protect, canaddornot } = require("../middleware/authorize");
-router.route("/").get(getAllreviews);
+router.route("/").post(getAllreviews);
 router.route("/add").post(protect, canaddornot, Addreview);
 
 router
