@@ -19,7 +19,10 @@ exports.getSinglereview = async (req, res) => {
 };
 exports.Addreview = async (req, res) => {
   try {
-    const review = await reviewModel.create(req.body);
+    const review = await reviewModel.create({
+      user: `${req.user._id}`,
+      ...req.body,
+    });
     res.status(200).json({ success: true, data: review });
   } catch (err) {
     res.status(500).json({ success: false, data: err });
