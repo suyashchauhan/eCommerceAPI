@@ -34,7 +34,7 @@ DELETE:
 
 ### person
 
-<pre>
+```js
 
 fields:
 {
@@ -47,7 +47,7 @@ fields:
   phone: Number,
 });
 
-</pre>
+```
 
 POST:
 
@@ -89,11 +89,11 @@ PUT:
 
 ```js
 fields: {
-  user:  mongoose.Schema.Types.ObjectId,
+  user: ObjectId,
   orderItems: [
     {
       qty: Number,
-      productId: mongoose.Schema.Types.ObjectId,
+      productId:ObjectId,
     },
   ],
   shippingAddress: {
