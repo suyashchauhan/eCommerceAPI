@@ -12,7 +12,7 @@ const session = require("express-session");
 const Mongostore = require("connect-mongo")(session);
 const { v4: uuidv4 } = require("uuid");
 //Load environment variables
-dotenv.config({ path: `${__dirname}/config/config.env` });
+dotenv.config({ path: `${__dirname}/.env` });
 //const productModel = require("./models/product");
 //so that req.body works properly
 app.use(express.json());
