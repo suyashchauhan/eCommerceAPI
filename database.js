@@ -10,7 +10,7 @@ const connectDB = async function () {
     });
     console.log("Connected to mongoDB Atlas".bold.blue);
   } catch (err) {
-    console.err(err);
+    throw new Error("Database failed to connect")
   }
 };
 
