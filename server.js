@@ -19,15 +19,15 @@ app.use(express.json());
 
 //cookie parser
 app.use(cookieparser());
-app.use(
-  session({
-    secret: process.env.Session_secret,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 60 * 100 },
-    store: new Mongostore({ mongooseConnection: mongoose.connection }),
-  })
-);
+// app.use(
+//   session({
+//     secret: process.env.Session_secret,
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: { maxAge: 60 * 100 },
+//     store: new Mongostore({ mongooseConnection: mongoose.connection }),
+//   })
+// );
 require("./config/passport")(passport);
 
 //passport local
