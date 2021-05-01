@@ -2,9 +2,14 @@
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/a434ec8e4682d8d238db)
 
+
+![](https://img.shields.io/badge/%F0%9F%A4%96-logged%20as%20customer-blueviolet)
+![](https://img.shields.io/badge/%F0%9F%91%BD-logged%20as%20dealer-blue)
+![](https://img.shields.io/badge/%F0%9F%A4%A0-logged%20as%20admin-blue)
 ## All routes
 
-### Category
+
+### **Category**
 
 ```js
 fields:
@@ -21,18 +26,18 @@ GET:
 
 POST:
 
-- /category/add ( add a new category )
+- :cowboy_hat_face:/category/add ( add a new category )
 
 PUT:
 
-- /category/5f5797ccb8f70e19887efdd1 ( update a Category )
-- /category/update/5f5797ccb8f70e19887efdd1 ( upload a photo  for the category )
+- :cowboy_hat_face:/category/5f5797ccb8f70e19887efdd1 ( update a Category )
+- :cowboy_hat_face:/category/update/5f5797ccb8f70e19887efdd1 ( upload a photo  for the category )
 
 DELETE:
 
-- /category/5f5797ccb8f70e19887efdd1 ( delete a category )
+- :cowboy_hat_face:/category/5f5797ccb8f70e19887efdd1 ( delete a category )
 
-### person
+### **Person**
 
 ```js
 
@@ -51,14 +56,14 @@ fields:
 
 POST:
 
-- /add/customer ( add a new customer )
-- /add/admin ( add a new admin )
-- /add/dealer ( add a new dealer )
+- :robot: :cowboy_hat_face: :alien:/add/customer ( add a new customer )
+- :cowboy_hat_face: /add/admin ( add a new admin )
+- :cowboy_hat_face: :alien: /add/dealer ( add a new dealer )
 - /login ( Login into your account)
 - id/forgot ( get password reset link )
 - /reset/token (reset password)
 
-### product
+### **Product**
 
 ```js
 fields:{
@@ -85,7 +90,7 @@ PUT:
 
 - /product/1 ( update a product )
 
-### Order
+### **Order**
 
 ```js
 fields: {
@@ -111,18 +116,18 @@ fields: {
 
 POST:
 
-- /order/add ( add a new order )
+- :robot: :cowboy_hat_face: :alien:/order/add ( add a new order )
 
 PUT:
 
-- /order/1/pay( pay for order )
-- /order/1/deliver ( deliver the order )
+- :robot: :cowboy_hat_face: :alien:/order/1/pay( pay for order )
+- :robot: :cowboy_hat_face: :alien:/order/1/deliver ( deliver the order )
 
 DELETE:
 
-- /order/cancel/1 ( Cancel the order )
+- :robot: :cowboy_hat_face: :alien:/order/cancel/1 ( Cancel the order )
 
-### Cart
+### **Cart**
 
 ```js
 fields:{
@@ -134,18 +139,18 @@ fields:{
 
 GET:
 
-- /cart ( get all products in the cart )
-- /cart/1/remove ( remove specific product from the cart based on its id )
+- :robot: :cowboy_hat_face: :alien:/cart ( get all products in the cart )
+- :robot: :cowboy_hat_face: :alien:/cart/1/remove ( remove specific product from the cart based on its id )
 
 POST:
 
-- /cart/add ( add a new products into cart )
+- :robot: :cowboy_hat_face: :alien:/cart/add ( add a new products into cart )
 
 DELETE:
 
-- /cart ( remove all cart items )
+- :robot: :cowboy_hat_face: :alien:/cart ( remove all cart items )
 
-### Review
+### **Review**
 
 ```js
 fields:
@@ -164,12 +169,12 @@ GET:
 POST:
 
 - /review ( get review by product id )
-- /review/add ( add review )
+- :robot: :cowboy_hat_face: :alien:/review/add ( add review )
 
 PUT:
 
-- /review/1 ( update a review )
+- :robot: :cowboy_hat_face: :alien:/review/1 ( update a review )
 
 DELETE:
 
-- /review/1 ( delete a review )
+- :robot: :cowboy_hat_face: :alien:/review/1 ( delete a review )
