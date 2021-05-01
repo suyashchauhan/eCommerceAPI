@@ -10,7 +10,6 @@ const fileupload = require("express-fileupload");
 const cookieparser = require("cookie-parser");
 const session = require("express-session");
 const Mongostore = require("connect-mongo")(session);
-const { v4: uuidv4 } = require("uuid");
 //Load environment variables
 dotenv.config({ path: `${__dirname}/.env` });
 //const productModel = require("./models/product");
@@ -19,15 +18,15 @@ app.use(express.json());
 
 //cookie parser
 app.use(cookieparser());
-// app.use(
-//   session({
-//     secret: process.env.Session_secret,
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: { maxAge: 60 * 100 },
-//     store: new Mongostore({ mongooseConnection: mongoose.connection }),
-//   })
-// );
+app.use(
+  session({
+    secret: process.env.Session_secret,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 60 * 100 },
+    store: new Mongostore({ mongooseConnection: mongoose.connection }),
+  })
+);
 require("./config/passport")(passport);
 
 //passport local
@@ -52,6 +51,12 @@ const order = require("./routes/order");
 app.use(morgan("dev"));
 //file upload
 app.use(fileupload());
+
+// Redirect to Docs 
+app.get('/', (req, res, next) => {
+  res.redirect('https://documenter.getpostman.com/view/11688579/TVRj58Xi');
+})
+
 app.use("/api/category", categories);
 app.use("/api/review", reviews);
 app.use("/api", persons);
