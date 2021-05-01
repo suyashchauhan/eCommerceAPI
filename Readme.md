@@ -1,11 +1,13 @@
 # About The API
-
+<!-- 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/a434ec8e4682d8d238db)
+ -->
 
+![](https://img.shields.io/badge/%F0%9F%A4%96-logged%20in%20as%20customer-blueviolet?style=for-the-badge&labelColor=white)
 
-![](https://img.shields.io/badge/%F0%9F%A4%96-logged%20as%20customer-blueviolet)
-![](https://img.shields.io/badge/%F0%9F%91%BD-logged%20as%20dealer-blue)
-![](https://img.shields.io/badge/%F0%9F%A4%A0-logged%20as%20admin-blue)
+![](https://img.shields.io/badge/%F0%9F%91%BD-logged%20in%20as%20dealer-blue?style=for-the-badge&labelColor=white)
+
+![](https://img.shields.io/badge/%F0%9F%A4%A0-logged%20in%20as%20admin-red?style=for-the-badge&labelColor=white)
 ## All routes
 
 
