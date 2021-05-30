@@ -40,5 +40,8 @@ const orderSchema = new mongoose.Schema({
   deliveredat: {
     type: Date,
   },
+  invoice_id: {
+    type: String,
+  }
 });
 module.exports = mongoose.model("Order", orderSchema);

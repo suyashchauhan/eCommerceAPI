@@ -12,8 +12,10 @@
   "dependencies": {
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
     "connect-mongo": "^3.2.0",
     "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
     "express-session": "^1.17.1",
@@ -26,8 +28,7 @@
     "nodemon": "^2.0.4",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "colors": "^1.4.0",
-    "dotenv": "^8.2.0"
+    "stripe": "^8.148.0"
   },
   "devDependencies": {}
 }

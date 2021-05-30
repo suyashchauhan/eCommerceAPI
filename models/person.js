@@ -3,6 +3,12 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 
 const personModel = new mongoose.Schema({
+  stripeId: {
+    type: String,
+    default: "",
+    required: false,
+    select: false,
+  },
   firstname: {
     type: String,
     required: true,
@@ -77,7 +83,7 @@ personModel.methods.generatetoken = function () {
     .createHash("sha256")
     .update(resettoken)
     .digest("hex");
-  this.resetPasswordExpire = Date.now() +  60*10 * 1000; // 10 min expiration time
+  this.resetPasswordExpire = Date.now() + 60 * 10 * 1000; // 10 min expiration time
   return resettoken;
 };
 

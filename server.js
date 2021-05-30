@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const stripe = require('stripe')
 const colors = require("colors");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
@@ -9,6 +10,7 @@ const connectDB = require("./database");
 const fileupload = require("express-fileupload");
 const cookieparser = require("cookie-parser");
 const session = require("express-session");
+const orderModel = require("./models/order");
 const Mongostore = require("connect-mongo")(session);
 //Load environment variables
 dotenv.config({ path: `${__dirname}/.env` });
@@ -56,7 +58,37 @@ app.use(fileupload());
 app.get('/', (req, res, next) => {
   res.redirect('https://documenter.getpostman.com/view/11688579/TVRj58Xi');
 })
+app.post('/webhook', async (req, res) => {
+  let event;
+  if (process.env.NODE_CONFIG_PRODUCTION === 'true') {
+    const signature = req.headers['stripe-signature']
+    try {
+      event = stripe.webhooks.constructEvent(req.body, signature, process.env.Stripe_endpoint_secret)
+    }
+    catch (err) {
+      res.status(400).send({ sucess: false, mesg: `Webhook error${err.message}` })
+    }
+  }
+  else
+    event = req.body
+  switch (event.type) {
+    case 'invoice.paid': const paymentIntent = event.data.object
+      try {
+        const paidOrder = await orderModel.findOne({ invoice_id: paymentIntent.id })
+        if (paidOrder) {
+          paidOrder.isPaid = true;
+          await paidOrder.save();
+        }
+      }
+      catch (err) {
+        res.json({ success: false });
+      }
+      break;
+    default: console.log(`Unhandled event type ${event.type}`)
+  }
 
+  res.json({ success: true });
+})
 app.use("/api/category", categories);
 app.use("/api/review", reviews);
 app.use("/api", persons);
